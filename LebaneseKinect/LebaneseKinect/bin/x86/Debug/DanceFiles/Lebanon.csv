@@ -1,0 +1,195 @@
+//Score block 1
+M, LeftKneeLiftFaceRight, 0,0,0,6,517
+M, RightKneeLiftFaceRight, 0,0,0,7,677
+M, LeftKneeLiftFaceRight, 0,0,0,8,714
+M, RightKneeLift, 0,0,0,9,772
+M, LeftKneeLift, 0,0,0,10,890
+M, RightKneeKick, 0,0,0,11,965
+M, LeftKneeLiftAndFrontTorso, 0,0,0,13,12
+M, RightKneeKick, 0,0,0,14,9
+M, LeftKneeLift, 0,0,0,15,67
+M, RightKneeKick, 0,0,0,16,167
+M, LeftKneeLiftAndFrontTorso, 0,0,0,17,252
+M, RightKneeKick, 0,0,0,18,309
+
+F, LeftKneeLiftFaceLeft, 0,0,0,6,517
+F, RightKneeLiftFaceLeft, 0,0,0,7,677
+F, LeftKneeLiftFaceLeft, 0,0,0,8,714
+F, RightKneeLift, 0,0,0,9,772
+F, LeftKneeLift, 0,0,0,10,890
+F, RightKneeKick, 0,0,0,11,965
+F, LeftKneeLiftAndFrontTorso, 0,0,0,13,12
+F, RightKneeKick, 0,0,0,14,9
+F, LeftKneeLift, 0,0,0,15,67
+F, RightKneeKick, 0,0,0,16,167
+F, LeftKneeLiftAndFrontTorso, 0,0,0,17,252
+F, RightKneeKick, 0,0,0,18,309
+N, Score1, 0,0,0,18,880
+
+//Score block 2
+M, LeftKneeLift_LeftHand, 0,0,0,19,481
+M, RightKneeLift_LeftHand, 0,0,0,20,481
+M, LeftKneeLiftAndFrontTorso, 0,0,0,21,564
+M, RightKneeLift_LeftHand, 0,0,0,22,630
+M, LeftKneeLift_LeftHand, 0,0,0,23,696
+M, RightKneeLift_LeftHand, 0,0,0,24,763
+M, LeftKneeLiftAndFrontTorso, 0,0,0,25,879
+M, RightKneeLift_LeftHand, 0,0,0,26,962
+M, KneelAndClap, 0,0,0,28,778
+
+F, HipShakeBack, 0,0,0,21,150
+F, HipShakeFront, 0,0,0,25,320
+F, HipShakeBack, 0,0,0,29,571
+N, Score2, 0,0,0,30,500
+
+//Score block 3
+M, LeftKneeLift, 0,0,0,36,638
+M, RightKneeLift, 0,0,0,37,634
+M, LeftKneeLift, 0,0,0,38,705
+M, RightKneeLift, 0,0,0,39,736
+M, LeftKneeLift, 0,0,0,40,884
+M, RightKneeLift, 0,0,0,41,952
+M, LeftKneeLift, 0,0,0,43,42
+M, RightKneeLift, 0,0,0,44,32
+M, ShrugShoulders, 0,0,0,46,819
+
+F, HipShakeFront, 0,0,0,33,824
+F, ScrollingHands_Right, 0,0,0,36,81
+F, CrouchAndHipShake, 0,0,0,38,318
+F, ScrollingHands_Left, 0,0,0,40,393
+F, CrouchAndHipShake, 0,0,0,42,449
+F, ScrollingHands_Right, 0,0,0,44,912
+F, CrouchAndHipShake, 0,0,0,46,561
+N, Score3, 0,0,0,47,989
+
+//Score block 4
+M, LeftKneeLift, 0,0,0,49,342
+M, RightKneeLift, 0,0,0,50,399
+M, LeftKneeLift, 0,0,0,51,557
+M, RightKneeLift, 0,0,0,52,635
+M, RightFootCross, 0,0,0,55,358
+M, LeftKneeLift, 0,0,0,57,635
+M, LeftKneeLift, 0,0,0,58,669
+M, RightFootCross, 0,0,0,59,645
+M, LeftKneeLift, 0,0,1,1,758
+M, LeftKneeLift, 0,0,1,2,977
+M, RightFootCross, 0,0,1,3,871
+M, LeftKneeLift, 0,0,1,6,87
+M, LeftKneeLift, 0,0,1,7,305
+M, RightFootCross, 0,0,1,8,240
+
+F, ScrollingHands_Left, 0,0,0,48,959
+F, CrouchAndHipShake, 0,0,0,51,53
+F, RightFootCross, 0,0,0,55,358
+F, LeftKneeLift, 0,0,0,57,635
+F, LeftKneeLift, 0,0,0,58,669
+F, RightFootCross, 0,0,0,59,645
+F, LeftKneeLift, 0,0,1,1,758
+F, LeftKneeLift, 0,0,1,2,977
+F, RightFootCross, 0,0,1,3,871
+F, LeftKneeLift, 0,0,1,6,87
+F, LeftKneeLift, 0,0,1,7,305
+F, RightFootCross, 0,0,1,8,240
+N, Score4, 0,0,1,9,001
+
+//Score block 5
+M, LeftKneeLift, 0,0,1,10,904
+M, RightKneeLift, 0,0,1,11,856
+M, LeftKneeLift, 0,0,1,12,888
+M, RightKneeLift, 0,0,1,13,961
+M, LeftKneeLift, 0,0,1,15,71
+M, RightKneeKick, 0,0,1,16,143
+M, LeftHandToFace_Spin, 0,0,1,17,233
+M, RightKneeLiftAndLeftHand, 0,0,1,18,265
+M, LeftKneeLift, 0,0,1,19,334
+M, RightKneeLift, 0,0,1,20,426
+M, LeftKneeLift, 0,0,1,21,497
+M, RightKneeLift, 0,0,1,22,549
+M, LeftKneeLift, 0,0,1,23,290
+M, LeftKneeLiftFaceLeft, 0,0,1,24,322
+M, RightKneeLift_FaceBack, 0,0,1,25,522
+M, LeftKneeLiftFaceRight, 0,0,1,26,655
+M, LeftKneeKick, 0,0,1,28,154
+M, LeftKneeKick, 0,0,1,29,138
+M, LeftKneeLift, 0,0,1,30,204
+M, RightKneeKick, 0,0,1,31,238
+M, LeftKneeKick, 0,0,1,32,186
+M, LeftKneeKick, 0,0,1,33,403
+M, LeftKneeLift, 0,0,1,34,586
+
+F, ElbowSway, 0,0,1,10,904
+F, WristArcRaise_Left, 0,0,1,19,2
+F, WristArcRaise_Right, 0,0,1,20,18
+F, Home, 0,0,1,20,992
+F, WristArcRaise_Left, 0,0,1,23,182
+F, WristArcRaise_Right, 0,0,1,24,336
+F, Home, 0,0,1,25,332
+F, ThrillerHandsLeft, 0,0,1,27,650
+F, LeftBendHipShake, 0,0,1,29,841
+F, ThrillerHandsLeft, 0,0,1,31,837
+F, LeftBendHipShake, 0,0,1,34,26
+N, Score5, 0,0,0,1,34,989
+
+
+M, RightKneeLift, 0,0,1,35,569
+M, LeftKneeLift, 0,0,1,36,518
+M, RightKneeLift, 0,0,1,37,685
+M, LeftKneeLift, 0,0,1,38,734
+M, RightKneeLift, 0,0,1,39,734
+M, LeftKneeLift, 0,0,1,40,767
+M, RightKneeKick, 0,0,1,41,951
+M, LeftKneeLiftAndFrontTorso, 0,0,1,42,983
+M, RightKneeKick, 0,0,1,44,49
+M, LeftKneeLift, 0,0,1,45,99
+M, RightKneeKick, 0,0,1,46,281
+M, LeftKneeLift, 0,0,1,46,986
+M, LeftKneeLift, 0,0,1,47,902
+M, RightFootCross, 0,0,1,48,959
+M, LeftKneeLift, 0,0,1,51,198
+M, LeftKneeLift, 0,0,1,52,238
+M, RightFootCross, 0,0,1,53,236
+M, LeftKneeLift, 0,0,1,55,434
+M, LeftKneeLift, 0,0,1,56,530
+M, RightFootCross, 0,0,1,57,548
+M, LeftKneeLift, 0,0,1,59,789
+M, LeftKneeLift, 0,0,2,0,868
+M, RightFootCross, 0,0,2,1,785
+
+F, LeftKneeLift, 0,0,1,40,767
+F, RightKneeKick, 0,0,1,41,951
+F, LeftKneeLiftAndFrontTorso, 0,0,1,42,983
+F, RightKneeKick, 0,0,1,44,49
+F, LeftKneeLift, 0,0,1,45,99
+F, RightKneeKick, 0,0,1,46,281
+F, LeftKneeLift, 0,0,1,46,986
+F, LeftKneeLift, 0,0,1,47,902
+F, RightFootCross, 0,0,1,48,959
+F, LeftKneeLift, 0,0,1,51,198
+F, LeftKneeLift, 0,0,1,52,238
+F, RightFootCross, 0,0,1,53,236
+F, LeftKneeLift, 0,0,1,55,434
+F, LeftKneeLift, 0,0,1,56,530
+F, RightFootCross, 0,0,1,57,548
+F, LeftKneeLift, 0,0,1,59,789
+F, LeftKneeLift, 0,0,2,0,868
+F, RightFootCross, 0,0,2,1,785
+N, Score6, 0,0,2,2,115
+
+//Score block 7
+M, LeftKneeLift, 0,0,2,4,419
+M, RightKneeKick, 0,0,2,5,494
+M, RightKneeKick, 0,0,2,7,566
+M, RightKneeKneel_UnderArm_HandBehind, 0,0,2,9,254
+M, RightKneeKneel_UnderArm, 0,0,2,12,343
+
+F, BackSpinRightKneeLift, 0,0,2,5,624
+F, CrouchAndHipShake, 0,0,2,8,324
+F, RightHandRaise, 0,0,2,11,856
+N, Score7, 0,0,2,13,100
+
+
+
+
+
+
+
