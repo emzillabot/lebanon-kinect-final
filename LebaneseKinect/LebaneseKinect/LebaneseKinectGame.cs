@@ -29,6 +29,7 @@ namespace LebaneseKinect
     /// </summary>
     public class LebaneseKinectGame : Microsoft.Xna.Framework.Game
     {
+        
         //Important Drew Hicks Refactor
         enum GameState { ATTRACT, MENU, HOWTOPLAY, DANCE, SCORE, CONTINUE, QUIT };
         int gameState = (int)GameState.ATTRACT;
@@ -1032,6 +1033,20 @@ namespace LebaneseKinect
             Content.Unload();
         }
 
+        protected void resetDance() 
+        {
+
+            gameState = (int)GameState.ATTRACT;
+
+            Dance dance1 = new Dance("Lebanon");
+            Dance dance2 = new Dance("Lebanon2");
+            Dance dance3 = new Dance("Lebanon3Actual");
+
+            dance1.LoadContent(Content);
+            dance2.LoadContent(Content);
+            dance3.LoadContent(Content);
+
+        }
 
         private void IncrementDance()
         {
@@ -1041,14 +1056,15 @@ namespace LebaneseKinect
                 case 1:
                     selectedDance = dance1;
                     break;
-                case 2:
+                /*case 2:
                     selectedDance = dance2;
                     break;
                 case 0:
                     selectedDance = dance3;
-                    break;
+                    break;*/
                 default:
-                    selectedDance = dance1;
+                    System.Diagnostics.Debug.WriteLine("------------DEFAULT SWITCH-----------");
+                    resetDance();
                     break;
             }
 
