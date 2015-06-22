@@ -47,3 +47,10 @@ C:\Users\Izzy\Desktop\lebanon-kinect\LebaneseKinect\SkinnedModelPipeline\bin\x86
 C:\Users\Izzy\Desktop\lebanon-kinect\LebaneseKinect\SkinnedModelPipeline\obj\x86\Debug\SkinnedModelPipeline.csprojResolveAssemblyReference.cache
 C:\Users\Izzy\Desktop\lebanon-kinect\LebaneseKinect\SkinnedModelPipeline\obj\x86\Debug\SkinnedModelPipeline.dll
 C:\Users\Izzy\Desktop\lebanon-kinect\LebaneseKinect\SkinnedModelPipeline\obj\x86\Debug\SkinnedModelPipeline.pdb
+C:\Users\adminuser\Documents\GitHub\lebanon-kinect-final\LebaneseKinect\SkinnedModelPipeline\bin\x86\Debug\SkinnedModelPipeline.dll
+C:\Users\adminuser\Documents\GitHub\lebanon-kinect-final\LebaneseKinect\SkinnedModelPipeline\bin\x86\Debug\SkinnedModelPipeline.pdb
+C:\Users\adminuser\Documents\GitHub\lebanon-kinect-final\LebaneseKinect\SkinnedModelPipeline\bin\x86\Debug\SkinnedModel.dll
+C:\Users\adminuser\Documents\GitHub\lebanon-kinect-final\LebaneseKinect\SkinnedModelPipeline\bin\x86\Debug\SkinnedModel.pdb
+C:\Users\adminuser\Documents\GitHub\lebanon-kinect-final\LebaneseKinect\SkinnedModelPipeline\obj\x86\Debug\SkinnedModelPipeline.csprojResolveAssemblyReference.cache
+C:\Users\adminuser\Documents\GitHub\lebanon-kinect-final\LebaneseKinect\SkinnedModelPipeline\obj\x86\Debug\SkinnedModelPipeline.dll
+C:\Users\adminuser\Documents\GitHub\lebanon-kinect-final\LebaneseKinect\SkinnedModelPipeline\obj\x86\Debug\SkinnedModelPipeline.pdb

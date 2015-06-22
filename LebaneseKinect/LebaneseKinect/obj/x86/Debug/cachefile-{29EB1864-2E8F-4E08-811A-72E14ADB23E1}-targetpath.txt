@@ -148,6 +148,7 @@ Content\MoveIcons\male_RightKneeLift_FaceBack.xnb
 Content\MoveIcons\male_RightKneeLift_FaceRight.xnb
 Content\MoveIcons\male_RightKneeLift_LeftHand.xnb
 Content\MoveIcons\male_shrug.xnb
+Content\MoveIcons\female_LeftKneeLiftFaceRight.xnb
 Content\MoveIcons\male_BackSideLeftKneeLift.xnb
 Content\MoveIcons\male_RightAnkleFaceRight.xnb
 Content\MoveIcons\male_RightAnkleFaceLeft.xnb
@@ -182,4 +183,3 @@ Content\Video\Lebanon2.wmv
 Content\Video\Lebanon3Actual.xnb
 Content\Video\Lebanon3Actual.wmv
 Content\Models\dabkeTexture_0.xnb
-Content\MoveIcons\female_LeftKneeLiftFaceRight.xnb

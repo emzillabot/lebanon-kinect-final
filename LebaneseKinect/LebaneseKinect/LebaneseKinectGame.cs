@@ -1011,7 +1011,6 @@ namespace LebaneseKinect
                     selectedDance = dance2;
                     break;
                 case 2:
-                    Debug.WriteLine("DANCE DURATION " + dance3.GetMovie().Duration);
                     selectedDance = dance3;
                     break;
                 default:
@@ -2855,12 +2854,11 @@ namespace LebaneseKinect
                     //end score block 13
                     #endregion
                 }
-                //Debug.WriteLine("GAME END COUNTDOWN: " + gameEnd.Subtract(videoTime.Elapsed).Milliseconds);
+               
                 //We are at the end of the dance video, time to display scores
                
                 if (gameEnd.Subtract(videoTime.Elapsed).Milliseconds < 0)
                 {
-                    Debug.WriteLine("TIME ELAPSED: " + videoTime.Elapsed);
                     loopTime.Reset();
                     loopTime.Start();
                     videoTime.Reset();
@@ -2869,11 +2867,8 @@ namespace LebaneseKinect
                     GLOBALS.PLAYER_ONE_ACTIVE = false;
                     GLOBALS.PLAYER_TWO_ACTIVE = false;
                 }
-                //Debug.WriteLine("DANCE NUMBER:" + selectedDanceNum);
-                Debug.WriteLine("TIME ELAPSED: " + (int)videoTime.ElapsedMilliseconds);
                 if (selectedDanceNum == 3 && (int)videoTime.ElapsedMilliseconds >= 104000)
                 {
-                    Debug.WriteLine("END OF LOOP");
                     loopTime.Reset();
                     loopTime.Start();
                     videoTime.Reset();
@@ -5003,8 +4998,6 @@ namespace LebaneseKinect
                 if (scoreBackground != null)
                 {
                     // Draw score screen over top
-                    //spriteBatch.Draw(scoreBackground, new Rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT), Color.White);
-                    //Debug.WriteLine("DANCE NUMBER: " + selectedDanceNum);
                     switch (selectedDanceNum)
                     {
                         case 1:
