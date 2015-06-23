@@ -211,7 +211,7 @@ F, LeftKneeLift, 0,0,2,9,256
 F, RightKneeKick, 0,0,2,10,113
 F, LeftKneeLift, 0,0,2,11,228
 F, LeftKneeLift, 0,0,2,12,225
-F, RightKneeKick, 0,0,2,13,163
+//F, RightKneeKick, 0,0,2,13,163
 
 M, LeftKneeLift, 0,0,2,0,375
 M, RightKneeKick, 0,0,2,1,211
@@ -226,9 +226,9 @@ M, LeftKneeLift, 0,0,2,9,256
 M, RightKneeKick, 0,0,2,10,113
 M, LeftKneeLift, 0,0,2,11,228
 M, LeftKneeLift, 0,0,2,12,225
-M, RightKneeKick, 0,0,2,13,163
-N, Score7, 0,0,2, 14, 250
-
+//M, RightKneeKick, 0,0,2,13,163
+//N, Score7, 0,0,2, 14, 250
+N, Score7, 0,0,2,13,163
 
 
 

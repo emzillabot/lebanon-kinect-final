@@ -70,9 +70,6 @@ namespace LebaneseKinect
             if (GetMoveIcon() != null)
                 sb.Draw(GetMoveIcon(), new Rectangle(xlocation - stretch, GLOBALS.WINDOW_HEIGHT - (101 + stretch), 100 + (2 * stretch), GLOBALS.WINDOW_HEIGHT - (380 - (2 * stretch))), scoreColor * fadeOutAmt);
 
-                //sb.Draw(GetMoveIcon(), new Rectangle(xlocation - stretch, GLOBALS.WINDOW_HEIGHT - (131 + stretch), 120 + (2 * stretch), GLOBALS.WINDOW_HEIGHT - (350 - (2 * stretch))), scoreColor * fadeOutAmt);
-
-                //sb.Draw(GetMoveIcon(), new Rectangle(xlocation - stretch, GLOBALS.WINDOW_HEIGHT - (160 + stretch), 120 + (2 * stretch), GLOBALS.WINDOW_HEIGHT - (350 - (2 * stretch))), scoreColor * fadeOutAmt);
         }
 
         public void ScoreMove(TimeSpan currentTime)
