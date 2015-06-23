@@ -38,7 +38,7 @@ namespace LebaneseKinect
         Dance dance2 = new Dance("Lebanon2");
         Dance dance3 = new Dance("Lebanon3Actual");
         Dance selectedDance;
-        int selectedDanceNum = 2;
+        int selectedDanceNum = 1;
 
         // Declaring variables...
         bool bWantsToQuit = false;
@@ -1038,34 +1038,43 @@ namespace LebaneseKinect
 
             gameState = (int)GameState.ATTRACT;
 
-            Dance dance1 = new Dance("Lebanon");
-            Dance dance2 = new Dance("Lebanon2");
-            Dance dance3 = new Dance("Lebanon3Actual");
+            dance1 = new Dance("Lebanon");
+            dance2 = new Dance("Lebanon2");
+            dance3 = new Dance("Lebanon3Actual");
 
             dance1.LoadContent(Content);
             dance2.LoadContent(Content);
             dance3.LoadContent(Content);
+
+            //selectedDanceNum = 0;
+            //gameState = (int)GameState.CONTINUE;
+           
 
         }
 
         private void IncrementDance()
         {
             selectedDanceNum++;
+            System.Diagnostics.Debug.WriteLine("CURRENT DANCE NUMBER: " + selectedDanceNum);
+            
             switch (selectedDanceNum % 3)
             {
                 case 1:
-                    selectedDance = dance1;
-                    break;
-                /*case 2:
-                    selectedDance = dance2;
-                    break;
+                   resetDance();
+                   selectedDance = dance1;
+                   break;
+                case 2:
+                   resetDance();
+                   selectedDance = dance2;
+                   break;
                 case 0:
-                    selectedDance = dance3;
-                    break;*/
+                   resetDance();
+                   selectedDance = dance3;
+                   break;
                 default:
-                    System.Diagnostics.Debug.WriteLine("------------DEFAULT SWITCH-----------");
-                    resetDance();
-                    break;
+                   resetDance();
+                   selectedDance = dance1;
+                   break;
             }
 
             if (videoPlayer2 != null)
@@ -2883,7 +2892,8 @@ namespace LebaneseKinect
                     GLOBALS.PLAYER_ONE_ACTIVE = false;
                     GLOBALS.PLAYER_TWO_ACTIVE = false;
                 }
-                if (selectedDanceNum == 3 && (int)videoTime.ElapsedMilliseconds >= 104000)
+                //Cutting the end of Dance 2
+                if (selectedDanceNum % 3 == 2 && (int)videoTime.ElapsedMilliseconds >= 134500)
                 {
                     loopTime.Reset();
                     loopTime.Start();
@@ -2893,6 +2903,18 @@ namespace LebaneseKinect
                     GLOBALS.PLAYER_ONE_ACTIVE = false;
                     GLOBALS.PLAYER_TWO_ACTIVE = false;
                 }
+                //Cutting the end of Dance 3
+                if (selectedDanceNum % 3 == 0 && (int)videoTime.ElapsedMilliseconds >= 104000)
+                {
+                    loopTime.Reset();
+                    loopTime.Start();
+                    videoTime.Reset();
+                    videoPlayer2.Stop();
+                    gameState = (int)GameState.SCORE;
+                    GLOBALS.PLAYER_ONE_ACTIVE = false;
+                    GLOBALS.PLAYER_TWO_ACTIVE = false;
+                }
+
             }
 
             //Show Score, go to CONTINUE
@@ -2901,6 +2923,7 @@ namespace LebaneseKinect
                 loopTime.Reset();
                 loopTime.Start();
                 gameState = (int)GameState.CONTINUE;
+                
             }
 
             //Loop back to the start
@@ -5076,6 +5099,7 @@ namespace LebaneseKinect
                 DrawDebugString(resultFont, ratingC, (int)(5), 300, rating);
 
                 spriteBatch.End();
+                
             }
             else if (gameState == (int)GameState.CONTINUE)
             {
@@ -5130,7 +5154,7 @@ namespace LebaneseKinect
                     if (GLOBALS.PLAYER_ONE_ACTIVE)
                         //spriteBatch.Draw(n_MoveTarget, new Rectangle(0 + maleRectDiff, WINDOW_HEIGHT - 150, 120, WINDOW_HEIGHT - 350), Color.White);
                         //spriteBatch.Draw(n_MoveTargetNew, new Rectangle(maleRectDiff + 30, WINDOW_HEIGHT - 150, 120, WINDOW_HEIGHT - 350), Color.White);
-                        spriteBatch.Draw(n_MoveTargetNew, new Rectangle(maleRectDiff - 40, WINDOW_HEIGHT - 125, 120, WINDOW_HEIGHT - 350), Color.White);
+                        spriteBatch.Draw(n_MoveTargetNew, new Rectangle(maleRectDiff - 45, WINDOW_HEIGHT - 125, 120, WINDOW_HEIGHT - 350), Color.White);
 
                     if (GLOBALS.PLAYER_TWO_ACTIVE)
                         spriteBatch.Draw(n_MoveTargetNew, new Rectangle(550 - maleRectDiff, WINDOW_HEIGHT - 125, 120, WINDOW_HEIGHT - 350), Color.White);
