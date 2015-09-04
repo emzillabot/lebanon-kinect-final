@@ -183,3 +183,5 @@ Content\Video\Lebanon2.wmv
 Content\Video\Lebanon3Actual.xnb
 Content\Video\Lebanon3Actual.wmv
 Content\Models\dabkeTexture_0.xnb
+Content\Textures\p1join.xnb
+Content\Textures\p2join.xnb

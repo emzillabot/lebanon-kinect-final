@@ -47,6 +47,12 @@ namespace LebaneseKinect
             {
                 //TODO: There MUST be a better way of doing this than a huge switch statement
                 #region "m/f left knee moves"
+                case "FaceLeft":
+                    if (FaceLeftTriggered()) score = ScoreMove(move, currentTime);
+                    break;
+                case "FaceRight":
+                    if (FaceRightTriggered()) score = ScoreMove(move, currentTime);
+                    break;
                 case "FrontHop":
                     if (FrontHopTriggered()) score = ScoreMove(move, currentTime);
                     break;
@@ -75,11 +81,16 @@ namespace LebaneseKinect
                     if (LeftKneeLiftAndCrossTriggered()) score = ScoreMove(move, currentTime);
                     break;
                 case "LeftKneeLiftFaceLeft":
+                case "LeftKneeLift_FaceLeft":
+                case "LeftKickFaceLeft":
                     if (LeftKneeLiftFaceLeftTriggered()) score = ScoreMove(move, currentTime);
                     break;
                 case "LeftKneeLiftFaceRight":
+                case "LeftKneeLift_FaceRight":
+                case "LeftKickFaceRight":
                     if (LeftKneeLiftFaceRightTriggered()) score = ScoreMove(move, currentTime);
                     break;
+                case "BackSideLeftKneeLift":
                 case "LeftKneeLiftFaceBack":
                     if (LeftKneeLiftFaceBackTriggered()) score = ScoreMove(move, currentTime);
                     break;
@@ -121,11 +132,19 @@ namespace LebaneseKinect
                 case "RightKneeKickUnderArm":
                     if (RightKneeKickAndUnderArmTriggered()) score = ScoreMove(move, currentTime);
                     break;
+                case "RightKneeLiftFaceRight":
+                case "RightKneeLift_FaceRight":
+                case "RightKickFaceRight":
+                    if (RightKneeLiftFaceRightTriggered()) score = ScoreMove(move, currentTime);
+                    break;
                 case "RightKneeLiftFaceLeft":
+                case "RightKneeLift_FaceLeft":
+                case "RightKickFaceLeft":
                     if (RightKneeLiftFaceLeftTriggered()) score = ScoreMove(move, currentTime);
                     break;
                 case "BackSpinRightKneeLift":
                 case "RightKneeLiftFaceBack":
+                case "RightKneeLift_FaceBack":
                     if (RightKneeLiftFaceBackwardTriggered()) score = ScoreMove(move, currentTime);
                     break;
                 #endregion
@@ -224,6 +243,7 @@ namespace LebaneseKinect
                 #endregion
                 default:
                     //GLOBALS.writer.WriteLine(move.GetName() + " unknown");
+                    string faile = move.GetName();
                     move.ScoreMove(currentTime);
                     break;
             }
@@ -287,16 +307,16 @@ namespace LebaneseKinect
         }
         public bool LeftHandRaiseTriggered()
         {
-            return lhy - hy > .15;
+            return lhy - hy > .2;
         }
         public bool RightHandRaiseTriggered()
         {
-            return rhy - hy > .15;
+            return rhy - hy > .2;
         }
         private bool LeftKneeTriggered()
         {
             //same for male and female
-            bool yes = (lky > rky && lay > ray && distance2d(lkx, rkx, lky, rky) > .2);
+            bool yes = (lky - rky > .15 && lay > ray);
             if (yes)
                 return true;
             else
@@ -304,11 +324,11 @@ namespace LebaneseKinect
         }
         private bool FaceLeftTriggered()
         {
-            return (rsz - lsz) < -.05; //?? TODO: Are these the same idea?
+            return (rsz - lsz) < -.1; //?? TODO: Are these the same idea?
         }
         private bool FaceRightTriggered()
         {
-            return (lsz - rsz) < -.05;
+            return (lsz - rsz) < -.1;
         }
         private bool FaceForwardTriggered()
         {
@@ -369,7 +389,7 @@ namespace LebaneseKinect
         }
         private bool RightKneeTriggered() //right knee lifted
         {
-            return (rky > lky && ray > lay && distance2d(lkx, rkx, lky, rky) > .2);
+            return (rky - lky > .15 && ray > lay);
         }
         private bool RightKneeLiftAndBackTorsoTriggered()
         {
@@ -386,6 +406,10 @@ namespace LebaneseKinect
         private bool RightKneeLiftAndCrossTriggered()
         {
             return RightKneeTriggered() && LeftKneeCrossTriggered();
+        }
+        private bool RightKneeLiftFaceRightTriggered()
+        {
+            return RightKneeTriggered() && FaceRightTriggered();
         }
         private bool RightKneeLiftFaceLeftTriggered()
         {
@@ -422,11 +446,12 @@ namespace LebaneseKinect
         }
         private bool RightFootOverTriggered()
         {
-            return distance2d(rax, lax, ray, lay) > .1;
+            return lax - rax > .05;
+            //return distance2d(rax, lax, ray, lay) > .1;
         }
         private bool RightFootSwingTriggered() //RightFootSwing, if we've seen a cross, look for a swing back
         {
-            if (rightFootCrossed && RightFootOverTriggered())
+            if (RightFootOverTriggered())
             {
                 rightFootCrossed = false;
                 return true;
@@ -435,7 +460,8 @@ namespace LebaneseKinect
         }
         private bool RightFootCrossTriggered() //RightFootSwing, if we've seen a cross, look for a swing back
         {
-            if (!rightFootCrossed && !RightFootOverTriggered())
+            
+            if (RightFootOverTriggered())
             {
                 rightFootCrossed = true;
                 return true;

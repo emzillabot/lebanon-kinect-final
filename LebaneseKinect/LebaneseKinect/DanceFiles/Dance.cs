@@ -100,12 +100,6 @@ namespace LebaneseKinect
 
         public void Draw(TimeSpan currentTime, SpriteBatch sb)
         {
-            //Console.WriteLine("I am running this!");
-            //int maleRectDiff = GLOBALS.WINDOW_WIDTH / 2 - 100; //(probably don't do this here... need some globals)
-            
-            /** This line affects the sprite speed **/
-           int maleRectDiff = GLOBALS.WINDOW_WIDTH / 2 - 130;
-
             //go through dance moves (added in order) until we are past the scoring threshhold
             //draw them
             /** PLAYER ON THE LEFT **/
@@ -124,10 +118,10 @@ namespace LebaneseKinect
                         if (Math.Abs(diff) < 2000)
                         {
 
-                            int xlocation = Convert.ToInt32(0 + maleRectDiff * (2000 - Math.Abs(diff)) / 2000);
+                            int xlocation = Convert.ToInt32(GLOBALS.LEFT_TARGET * (2000 - Math.Abs(diff)) / 2000);
                             if (diff > 0)
                             {
-                                xlocation = Convert.ToInt32(0 + maleRectDiff);
+                                xlocation = Convert.ToInt32(GLOBALS.LEFT_TARGET);
                             }
                             move.Draw(sb, xlocation, currentTime);
                         }
@@ -142,10 +136,10 @@ namespace LebaneseKinect
 
                         if (Math.Abs(diff) < 2000)
                         {
-                            int xlocation = Convert.ToInt32(0 + maleRectDiff * (2000 - Math.Abs(diff)) / 2000);
+                            int xlocation = Convert.ToInt32(GLOBALS.LEFT_TARGET * (2000 - Math.Abs(diff)) / 2000);
                             if (diff > 0)
                             {
-                                xlocation = Convert.ToInt32(0 + maleRectDiff);
+                                xlocation = Convert.ToInt32(GLOBALS.LEFT_TARGET);
                             }
                             move.Draw(sb, xlocation, currentTime);
                         }
@@ -169,10 +163,10 @@ namespace LebaneseKinect
                         if (Math.Abs(diff) < 2000)
                         {
 
-                            int xlocation = Convert.ToInt32(0 + maleRectDiff * (2000 - Math.Abs(diff)) / 2000);
+                            int xlocation = Convert.ToInt32(GLOBALS.LEFT_TARGET * (2000 - Math.Abs(diff)) / 2000);
                             if (diff > 0)
                             {
-                                xlocation = Convert.ToInt32(0 + maleRectDiff);
+                                xlocation = Convert.ToInt32(GLOBALS.LEFT_TARGET);
                             }
                             move.Draw(sb, xlocation, currentTime);
                         }
@@ -187,10 +181,10 @@ namespace LebaneseKinect
 
                         if (Math.Abs(diff) < 2000)
                         {
-                            int xlocation = Convert.ToInt32(0 + maleRectDiff * (2000 - Math.Abs(diff)) / 2000);
+                            int xlocation = Convert.ToInt32(GLOBALS.LEFT_TARGET * (2000 - Math.Abs(diff)) / 2000);
                             if (diff > 0)
                             {
-                                xlocation = Convert.ToInt32(0 + maleRectDiff);
+                                xlocation = Convert.ToInt32(GLOBALS.LEFT_TARGET);
                             }
                             move.Draw(sb, xlocation, currentTime);
                         }
@@ -218,10 +212,10 @@ namespace LebaneseKinect
 
                         if (Math.Abs(diff) < 2000)
                         {
-                            int xlocation = Convert.ToInt32(500 - maleRectDiff * (2000 - Math.Abs(diff)) / 2000);
+                            int xlocation = Convert.ToInt32(GLOBALS.RIGHT_TARGET + (GLOBALS.WINDOW_WIDTH - 100 - GLOBALS.RIGHT_TARGET)* (Math.Abs(diff) / 2000));
                             if (diff > 0)
                             {
-                                xlocation = Convert.ToInt32(500 - maleRectDiff);
+                                xlocation = Convert.ToInt32(GLOBALS.RIGHT_TARGET);
                             }
                             move.Draw(sb, xlocation, currentTime);
                         }
@@ -230,18 +224,16 @@ namespace LebaneseKinect
                     foreach (DanceMove move in m_danceMoves)
                     {
                         /** This line affects the sprite speed **/
-                        maleRectDiff = GLOBALS.WINDOW_WIDTH / 2 - 149;
-
                         double diff = (currentTime.Subtract(move.moveSpan).TotalMilliseconds);
                         if (diff < -2000) //moves MUST BE in chronological order to do this
                             break;
 
                         if (Math.Abs(diff) < 2000)
                         {
-                            int xlocation = Convert.ToInt32(500 - maleRectDiff * (2000 - Math.Abs(diff)) / 2000);
+                            int xlocation = Convert.ToInt32(GLOBALS.RIGHT_TARGET + (GLOBALS.WINDOW_WIDTH - 100 - GLOBALS.RIGHT_TARGET) * (Math.Abs(diff) / 2000));
                             if (diff > 0)
                             {
-                                xlocation = Convert.ToInt32(500 - maleRectDiff);
+                                xlocation = Convert.ToInt32(GLOBALS.RIGHT_TARGET);
                             }
                             move.Draw(sb, xlocation, currentTime);
                         }
@@ -263,10 +255,10 @@ namespace LebaneseKinect
 
                         if (Math.Abs(diff) < 2000)
                         {
-                            int xlocation = Convert.ToInt32(500 - maleRectDiff * (2000 - Math.Abs(diff)) / 2000);
+                            int xlocation = Convert.ToInt32(GLOBALS.RIGHT_TARGET + (GLOBALS.WINDOW_WIDTH - 100 - GLOBALS.RIGHT_TARGET) * (Math.Abs(diff) / 2000));
                             if (diff > 0)
                             {
-                                xlocation = Convert.ToInt32(500 - maleRectDiff);
+                                xlocation = Convert.ToInt32(GLOBALS.RIGHT_TARGET);
                             }
                             move.Draw(sb, xlocation, currentTime);
                         }
@@ -274,19 +266,16 @@ namespace LebaneseKinect
 
                     foreach (DanceMove move in f_danceMoves)
                     {
-                        /** This line affects the sprite speed **/
-                        maleRectDiff = GLOBALS.WINDOW_WIDTH / 2 - 149;
-
                         double diff = (currentTime.Subtract(move.moveSpan).TotalMilliseconds);
                         if (diff < -2000) //moves MUST BE in chronological order to do this
                             break;
 
                         if (Math.Abs(diff) < 2000)
                         {
-                            int xlocation = Convert.ToInt32(500 - maleRectDiff * (2000 - Math.Abs(diff)) / 2000);
+                            int xlocation = Convert.ToInt32(GLOBALS.RIGHT_TARGET + (GLOBALS.WINDOW_WIDTH - 100 - GLOBALS.RIGHT_TARGET) * (Math.Abs(diff) / 2000));
                             if (diff > 0)
                             {
-                                xlocation = Convert.ToInt32(500 - maleRectDiff);
+                                xlocation = Convert.ToInt32(GLOBALS.RIGHT_TARGET);
                             }
                             move.Draw(sb, xlocation, currentTime);
                         }
@@ -402,7 +391,7 @@ namespace LebaneseKinect
 
             //then, go through the moves in the current list and check for the move name, or if they're after the current block, don't bother checking
             //mc.UpdateSkeleton(skeleton);
-            if(GLOBALS.PLAYER_ONE_ACTIVE && player == 1)
+            if ((!moviePath.Equals("Lebanon2") && GLOBALS.PLAYER_ONE_ACTIVE && player == 1) || (moviePath.Equals("Lebanon2") && GLOBALS.PLAYER_TWO_ACTIVE && player == 2))
             {
                 foreach (DanceMove move in m_danceMoves)
                 {
@@ -428,7 +417,7 @@ namespace LebaneseKinect
                     break; //this will only work if the moves are in chronological order!
                 }
             }
-            else if (GLOBALS.PLAYER_TWO_ACTIVE && player == 2)
+            else if ((moviePath.Equals("Lebanon2") && GLOBALS.PLAYER_ONE_ACTIVE && player == 1) || (!moviePath.Equals("Lebanon2") && GLOBALS.PLAYER_TWO_ACTIVE && player == 2))
             {
                 foreach (DanceMove move in f_danceMoves)
                 {

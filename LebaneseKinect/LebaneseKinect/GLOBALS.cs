@@ -20,12 +20,16 @@ namespace LebaneseKinect
         internal static bool PLAYER_ONE_ACTIVE = false;
         internal static bool PLAYER_TWO_ACTIVE = false;
 
-        internal static StreamWriter writer;
+        internal static int LEFT_TARGET = (WINDOW_WIDTH / 2) - 130;
+        internal static int RIGHT_TARGET = (WINDOW_WIDTH / 2) + 30;
+        internal static int DANCE_MOVE_Y = WINDOW_HEIGHT - 125;
+
+        //internal static StreamWriter writer;
 
         static GLOBALS()
         {
-            writer = new StreamWriter("MCDebug.txt", false);
-            writer.WriteLine("File created using StreamWriter class.");
+            //writer = new StreamWriter("MCDebug.txt", false);
+            //writer.WriteLine("File created using StreamWriter class.");
         }
     }
 }

@@ -38,7 +38,7 @@ namespace LebaneseKinect
         Dance dance2 = new Dance("Lebanon2");
         Dance dance3 = new Dance("Lebanon3Actual");
         Dance selectedDance;
-        int selectedDanceNum = 2;
+        int selectedDanceNum = 0;
 
         // Declaring variables...
         bool bWantsToQuit = false;
@@ -53,8 +53,12 @@ namespace LebaneseKinect
         KinectSensor kinect;
         Skeleton[] skeletonData;
 
-        int P1skeleton; //keep tracking IDs for players
-        int P2skeleton; //keep tracking IDs for players
+        int P1skeleton = -1; //keep tracking IDs for players
+        int P2skeleton = -1; //keep tracking IDs for players
+
+        Skeleton P1skeldata = null;
+        Skeleton P2skeldata = null;
+
         Boolean debugging = true;
 #endif
 
@@ -80,7 +84,7 @@ namespace LebaneseKinect
         Texture2D StepHomeOFF, StepCrossOFF, StepKickOFF;
         Stopwatch videoTime = new Stopwatch();
         Stopwatch loopTime = new Stopwatch();
-        Stopwatch introVideoTime = new Stopwatch();
+        Stopwatch playSessionTime = new Stopwatch();
         Vector2[] buttonPositions = { new Vector2(5, 5), new Vector2(75, 5), new Vector2(145, 5), new Vector2(215, 5), new Vector2(285, 5), new Vector2(355, 5) }; //currently unused
 
 
@@ -105,6 +109,8 @@ namespace LebaneseKinect
         Texture2D n_MoveTarget;
         Texture2D n_P1icon;
         Texture2D n_P2icon;
+        Texture2D n_P1Join;
+        Texture2D n_P2Join;
 
         /* Keyboard controls
          *  Up arrow: kick
@@ -133,8 +139,9 @@ namespace LebaneseKinect
         //
         TimeSpan stepFinished = new TimeSpan(0, 0, 3, 0, 0);
         TimeSpan danceVideoLength = new TimeSpan(0, 0, 0, 5, 0);
-        TimeSpan femPlayerRecog = new TimeSpan(0, 0, 3, 0, 0);
-        TimeSpan malePlayerRecog = new TimeSpan(0, 0, 3, 0, 0);
+        
+        TimeSpan femPlayerRecog = new TimeSpan(0, 0, 0, 0, 0);
+        TimeSpan malePlayerRecog = new TimeSpan(0, 0, 0, 0, 0);
 
         bool femPlayingText = false;
         bool malePlayingText = false;
@@ -159,7 +166,7 @@ namespace LebaneseKinect
         int femStepsDone = 0;
         int tempFemStepsDone = 0;
      
-        static int maleRectDiff = WINDOW_WIDTH / 2 + 50;
+        static int maleRectDiff = WINDOW_WIDTH / 2 - 130;
    
         TimeSpan gameEnd;
         TimeSpan restartGameLoop = new TimeSpan(0, 0, 0, 10, 000);
@@ -205,9 +212,8 @@ namespace LebaneseKinect
         List<string> eventsTriggeredList;
 
         protected Song song;
-        VideoPlayer videoPlayer, videoPlayer2, videoPlayer3;
+        VideoPlayer videoPlayer, videoPlayer2;
         Video video;
-        Video video1;
 
         public LebaneseKinectGame()
         {
@@ -216,7 +222,7 @@ namespace LebaneseKinect
             graphics.PreferredBackBufferHeight = WINDOW_HEIGHT;
             graphics.PreparingDeviceSettings += this.GraphicsDevicePreparingDeviceSettings;
             graphics.SynchronizeWithVerticalRetrace = true;
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
             eventsTriggeredList = new List<string>();
             //for (int i = 0; i < numberOfAnimationPlayers; i++)
@@ -260,6 +266,7 @@ namespace LebaneseKinect
                 kinect.Start();
                 Debug.WriteLineIf(debugging, kinect.Status);
                 kinect.SkeletonStream.Enable();
+                kinect.SkeletonStream.TrackingMode = SkeletonTrackingMode.Default; // Use Seated Mode
                 kinect.DepthStream.Enable(DepthImageFormat.Resolution640x480Fps30);
                 kinect.DepthFrameReady += new EventHandler<DepthImageFrameReadyEventArgs>(kinect_DepthFrameReady);
                 kinect.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(kinect_AllFramesReady);
@@ -269,7 +276,7 @@ namespace LebaneseKinect
                 Debug.WriteLine(e.ToString());
             }
 
-            kinect.ElevationAngle = 0;
+            //kinect.ElevationAngle = 0;
 #endif
         }
 
@@ -302,6 +309,8 @@ namespace LebaneseKinect
             n_MoveTarget = Content.Load<Texture2D>("Sprites\\n_MoveTarget");
             n_P1icon = Content.Load<Texture2D>("Textures\\lefthandraise");
             n_P2icon = Content.Load<Texture2D>("Textures\\righthandraise");
+            n_P1Join = Content.Load<Texture2D>("Textures\\p1join");
+            n_P2Join = Content.Load<Texture2D>("Textures\\p2join");
 
             song = Content.Load<Song>("Music\\dabke");
             //MediaPlayer.Play(song);
@@ -310,11 +319,10 @@ namespace LebaneseKinect
             dance2.LoadContent(Content);
             dance3.LoadContent(Content);
 
-            video = Content.Load<Video>("Video\\Lebanon2");
-            video1 = Content.Load<Video>("Video\\Lebanon");
+            video = Content.Load<Video>("Video\\Lebanon");
             videoPlayer = new VideoPlayer();
-            videoPlayer.Play(video1);
-            introVideoTime.Start();
+            videoPlayer.Play(video);
+            playSessionTime.Start();
             videoPlayer.IsLooped = true;
 
             switch (selectedDanceNum % 3)
@@ -390,18 +398,11 @@ namespace LebaneseKinect
 
             if (videoPlayer2 != null)
                 videoPlayer2.Dispose();
-            loopTime.Reset();
-            loopTime.Start();
-            GLOBALS.PLAYER_ONE_ACTIVE = true;
-            GLOBALS.PLAYER_TWO_ACTIVE = true;
-            gameState = (int)GameState.HOWTOPLAY;
 
-            if (videoPlayer3 != null)
-                videoPlayer3.Dispose();
             loopTime.Reset();
             loopTime.Start();
-            GLOBALS.PLAYER_ONE_ACTIVE = true;
-            GLOBALS.PLAYER_TWO_ACTIVE = true;
+            //GLOBALS.PLAYER_ONE_ACTIVE = true;
+            //GLOBALS.PLAYER_TWO_ACTIVE = true;
             gameState = (int)GameState.HOWTOPLAY;
         }
 
@@ -421,7 +422,7 @@ namespace LebaneseKinect
                 Keyboard.GetState().IsKeyDown(Keys.Q))
             {
                 bWantsToQuit = true;
-                GLOBALS.writer.Close();
+                //FGLOBALS.writer.Close();
 #if USE_KINECT
                 kinect.Dispose();
                 
@@ -481,7 +482,7 @@ namespace LebaneseKinect
                     {
                         keydown = true;
                         TimeSpan now = videoTime.Elapsed;
-                        GLOBALS.writer.WriteLine("Gender, MoveName, " + now.Days + "," + now.Hours + "," + now.Minutes + "," + now.Seconds + "," + now.Milliseconds);
+                        //GLOBALS.writer.WriteLine("Gender, MoveName, " + now.Days + "," + now.Hours + "," + now.Minutes + "," + now.Seconds + "," + now.Milliseconds);
                     }
                 }
                 else
@@ -583,6 +584,13 @@ namespace LebaneseKinect
             {
                 loopTime.Reset();
                 loopTime.Start();
+
+                //reset all players
+                P1skeleton = -1;
+                P2skeleton = -1;
+                GLOBALS.PLAYER_ONE_ACTIVE = false;
+                GLOBALS.PLAYER_TWO_ACTIVE = false;
+
                 gameState = (int)GameState.CONTINUE;
                 
             }
@@ -590,16 +598,22 @@ namespace LebaneseKinect
             //Loop back to the start
             if (gameState == (int)GameState.CONTINUE && restartGameLoop.CompareTo(loopTime.Elapsed) < 0)
             {
+                //reset all players
+                P1skeleton = -1;
+                P2skeleton = -1;
+                GLOBALS.PLAYER_ONE_ACTIVE = false;
+                GLOBALS.PLAYER_TWO_ACTIVE = false;
+
                 videoPlayer2.Dispose();
                 videoPlayer = new VideoPlayer();
                 videoPlayer.IsLooped = true;
-                videoPlayer.Play(video1);
-                selectedDanceNum = 2;
+                videoPlayer.Play(video);
+                selectedDanceNum = 0;
                 gameState = (int)GameState.ATTRACT;
                 videoTime.Reset();
                 loopTime.Reset();
-                introVideoTime.Reset();
-                introVideoTime.Start();
+                playSessionTime.Reset();
+                playSessionTime.Start();
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.D))
@@ -834,7 +848,7 @@ namespace LebaneseKinect
                 }
                 //write the score to screen using DisplayScore
                 displayScoreTextF = String.Format("{0,5}", displayScoreF);
-                DrawDebugString(resultFont, Color.White, (int)(WINDOW_WIDTH - 225), 100, displayScoreTextF);
+                DrawDebugString(resultFont, Color.White, (int)(WINDOW_WIDTH - 15 - resultFont.MeasureString(displayScoreTextF).X), 100, displayScoreTextF);
 
                 displayScoreText = String.Format("{0,5}", displayScore);
                 DrawDebugString(resultFont, Color.White, (int)(15), 100, displayScoreText);
@@ -873,8 +887,8 @@ namespace LebaneseKinect
                     ratingF = "In Training";
                     ratingFC = Color.Yellow;
                 }
-                DrawDebugString(resultFont, ratingFC, (int)(WINDOW_WIDTH / 2 - 50), 400, ratingF);
-                DrawDebugString(resultFont, ratingC, (int)(5), 300, rating);
+                DrawDebugString(resultFont, ratingFC, (int)(WINDOW_WIDTH - 5 - resultFont.MeasureString(ratingF).X), 400, ratingF);
+                DrawDebugString(resultFont, ratingC, (int)(5), 400, rating);
 
                 spriteBatch.End();
                 
@@ -929,10 +943,17 @@ namespace LebaneseKinect
                     int xlocation = 0;
 
                     selectedDance.Draw(currentTime, spriteBatch); //I can draw moves from a move batch
+                    float fadeout = (float)Math.Abs(1000.0f - (currentTime.TotalMilliseconds % 2000)) / 1000.0f; 
+
                     if (GLOBALS.PLAYER_ONE_ACTIVE)
-                        spriteBatch.Draw(n_MoveTargetNew, new Rectangle(maleRectDiff - 45, WINDOW_HEIGHT - 125, 120, WINDOW_HEIGHT - 350), Color.White);
+                        spriteBatch.Draw(n_MoveTargetNew, new Rectangle(GLOBALS.LEFT_TARGET - 10, GLOBALS.DANCE_MOVE_Y - 10, 120, 120), Color.White);
+                    else
+                        spriteBatch.Draw(n_P1Join, new Rectangle(0, GLOBALS.WINDOW_HEIGHT - 100, 200, 100), Color.White * fadeout);
+                    
                     if (GLOBALS.PLAYER_TWO_ACTIVE)
-                        spriteBatch.Draw(n_MoveTargetNew, new Rectangle(550 - maleRectDiff, WINDOW_HEIGHT - 125, 120, WINDOW_HEIGHT - 350), Color.White);
+                        spriteBatch.Draw(n_MoveTargetNew, new Rectangle(GLOBALS.RIGHT_TARGET - 10, GLOBALS.DANCE_MOVE_Y - 10, 120, 120), Color.White);
+                    else
+                        spriteBatch.Draw(n_P2Join, new Rectangle(GLOBALS.WINDOW_WIDTH - 200, GLOBALS.WINDOW_HEIGHT - 100, 200, 100), Color.White * fadeout);
                 
                     spriteBatch.End();
 
@@ -957,7 +978,7 @@ namespace LebaneseKinect
                     new Rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT),
                     null,
                     Color.White);
-                //DrawSkeleton(SharedSpriteBatch, new Vector2(WINDOW_WIDTH, WINDOW_HEIGHT), jointTexture);
+                DrawSkeletons(SharedSpriteBatch, new Vector2(WINDOW_WIDTH, WINDOW_HEIGHT), jointTexture);
                 //DrawSkeleton(SharedSpriteBatch, new Vector2(WINDOW_WIDTH, WINDOW_HEIGHT), jointTexture); //draw mocap balls
                 SharedSpriteBatch.End();
 #endif
@@ -970,14 +991,22 @@ namespace LebaneseKinect
         {
 #if USE_KINECT
             // Draw debug skeleton dots dots on the screen if player is being tracked by Kinect
-            //if (skeleton != null)
-            //{
-                //foreach (Joint joint in skeleton.Joints)
-                //{
-                //   Vector2 position = new Vector2((((0.5f * joint.Position.X) + 0.5f) * (resolution.X)), (((-0.5f * joint.Position.Y) + 0.5f) * (resolution.Y)));
-                //    spriteBatch.Draw(img, new Rectangle(Convert.ToInt32(position.X), Convert.ToInt32(position.Y), 10, 10), Color.Red);
-                //}
-            //}
+            if (P1skeldata != null)
+            {
+                foreach (Joint joint in P1skeldata.Joints)
+                {
+                   Vector2 position = new Vector2((((0.5f * joint.Position.X) + 0.5f) * (resolution.X)), (((-0.5f * joint.Position.Y) + 0.5f) * (resolution.Y)));
+                    spriteBatch.Draw(img, new Rectangle(Convert.ToInt32(position.X), Convert.ToInt32(position.Y), 10, 10), Color.Blue);
+                }
+            }
+            if (P2skeldata != null)
+            {
+                foreach (Joint joint in P2skeldata.Joints)
+                {
+                    Vector2 position = new Vector2((((0.5f * joint.Position.X) + 0.5f) * (resolution.X)), (((-0.5f * joint.Position.Y) + 0.5f) * (resolution.Y)));
+                    spriteBatch.Draw(img, new Rectangle(Convert.ToInt32(position.X), Convert.ToInt32(position.Y), 10, 10), Color.Orange);
+                }
+            }
 #endif
         }
 
@@ -1041,7 +1070,7 @@ namespace LebaneseKinect
 
                 resultColorF.A = (byte)Math.Max((255 * textFadeOutAmt), 0);
                 Vector2 resultSizeF = resultFont.MeasureString(resultStringF);
-                DrawDebugString(resultFont, resultColorF, (int)(WINDOW_WIDTH - resultSizeF.X), 25, resultStringF);
+                DrawDebugString(resultFont, resultColorF, (int)(WINDOW_WIDTH - 10 - resultSizeF.X), 25, resultStringF);
             }
 
             Color pColor = Color.White;
@@ -1112,9 +1141,8 @@ namespace LebaneseKinect
             if (bWantsToQuit)
                 return;
 
-            //throw new NotImplementedException();
-
-            int numPeople = 0;
+            bool p1seen = false;
+            bool p2seen = false;
 
             // Store all current Kinect skeletal info...
             using (SkeletonFrame skeletonFrame = e.OpenSkeletonFrame())
@@ -1131,169 +1159,87 @@ namespace LebaneseKinect
                     skeletonFrame.CopySkeletonDataTo(this.skeletonData);
                 }
             }
-            //Get the number of players
-            if (skeletonData != null)
-            {
-                foreach (Skeleton skel in skeletonData)
-                {
-                    if (skel.TrackingState == SkeletonTrackingState.Tracked)
-                    {
-                        numPeople++;
-                    }
-                }
-            }
             
             // If there is valid skelton data, examine for dance steps
             if (skeletonData != null)
             {
                 foreach (Skeleton skel in skeletonData)
                 {
-
-                    if (skel.TrackingState == SkeletonTrackingState.Tracked)
+                        //get whose skeleton it is
+                    if (skel.TrackingId == P1skeleton)
                     {
-                        //skeleton = skel;
+                        P1skeldata = skel;
+                        p1seen = true;
+                    }
+                    else if (skel.TrackingId == P2skeleton)
+                    {
+                        P2skeldata = skel;
+                        p2seen = true;
+                    }
 
-                        TimeSpan time = videoTime.Elapsed;
-
-                        float lhy = skel.Joints[JointType.HandLeft].Position.Y;
-                        float hy = skel.Joints[JointType.Head].Position.Y;
-                        //Player Recog- Must hold hand up for a set period of time to register, cannot already have that player playing
-                        //left hand raised = play as male
-                        if (gameState == (int)GameState.ATTRACT)
+                        //collect player data
+                        if ((!GLOBALS.PLAYER_ONE_ACTIVE || !GLOBALS.PLAYER_TWO_ACTIVE))
                         {
-                            selectedDance.mc.UpdateSkeleton(skel);
-                            if (!GLOBALS.PLAYER_ONE_ACTIVE && selectedDance.mc.LeftHandRaiseTriggered())
+                            if (skel.TrackingId != P1skeleton && skel.TrackingId != P2skeleton)
                             {
-                                if (!GLOBALS.PLAYER_TWO_ACTIVE || numPeople > 1)
+                                selectedDance.mc.UpdateSkeleton(skel);
+
+                                if (!GLOBALS.PLAYER_ONE_ACTIVE && selectedDance.mc.LeftHandRaiseTriggered())
                                 {
-                                    if (malePlayerRecog == stepFinished) //Start recording
+                                    GLOBALS.PLAYER_ONE_ACTIVE = true;
+                                    p1seen = true;
+                                    P1skeleton = skel.TrackingId;
+                                    malePlayingText = true;
+                                    p1textFadeOut = new TimeSpan(0, 0, 3); // 3-second fadeout
+                                    malePlayerRecog = new TimeSpan(0, 0, 0, 0, 0);
+
+                                    //do this somewhere else
+                                    if (gameState == (int)GameState.ATTRACT)
                                     {
-                                        if (gameState == (int)GameState.ATTRACT) malePlayerRecog = introVideoTime.Elapsed;
-                                        else malePlayerRecog = videoTime.Elapsed;
+                                        videoPlayer.Dispose();
+                                        IncrementDance();
                                     }
-                                    else
-                                    { //If their hand has been up for over 5 seconds
-                                        if (videoTime.Elapsed.Subtract(malePlayerRecog).Milliseconds > 800 || (gameState == (int)GameState.ATTRACT && introVideoTime.Elapsed.Subtract(malePlayerRecog).Milliseconds > 800))
-                                        {
-                                            GLOBALS.PLAYER_ONE_ACTIVE = true;
-                                            P1skeleton = skel.TrackingId;
-                                            malePlayingText = true;
-                                            p1textFadeOut = new TimeSpan(0, 0, 3); // 3-second fadeout
-                                            //ensure 1 person doesn't count as 2
-                                            /*      if ((femPlaying && numPeople < 2))
-                                                  {
-                                                      malePlaying = false;
-                                                      malePlayingText = false;
-                                                      p1textFadeOut = new TimeSpan(0, 0, 0); // 3-second fadeout
-                                                  }*/
-                                            if (gameState == (int)GameState.ATTRACT && GLOBALS.PLAYER_ONE_ACTIVE)
-                                            {
-                                                videoPlayer.Dispose();
-                                                IncrementDance();
-                                            }
-                                        }
+                                }
+
+                                //right hand raised = play as female
+                                if (!GLOBALS.PLAYER_TWO_ACTIVE && selectedDance.mc.RightHandRaiseTriggered())
+                                {
+                                    GLOBALS.PLAYER_TWO_ACTIVE = true;
+                                    p2seen = true;
+                                    P2skeleton = skel.TrackingId;
+                                    femPlayingText = true;
+                                    p2textFadeOut = new TimeSpan(0, 0, 3); // 3-second fadeout
+                                    femPlayerRecog = new TimeSpan(0, 0, 0, 0, 0);
+
+                                    //do this somewhere else
+                                    if (gameState == (int)GameState.ATTRACT)
+                                    {
+                                        videoPlayer.Dispose();
+                                        IncrementDance();
                                     }
                                 }
                             }
-                            //right hand raised = play as female
-                            if (!GLOBALS.PLAYER_TWO_ACTIVE && selectedDance.mc.RightHandRaiseTriggered())
-                            {
-                                if (!GLOBALS.PLAYER_ONE_ACTIVE || numPeople > 1)
-                                {
-                                    if (femPlayerRecog == stepFinished) //Start recording
-                                    {
-                                        if (gameState == (int)GameState.ATTRACT) femPlayerRecog = introVideoTime.Elapsed;
-                                        else femPlayerRecog = videoTime.Elapsed;
-                                    }
-                                    else
-                                    { //If their hand has been up for over 3 seconds
-                                        if (videoTime.Elapsed.Subtract(femPlayerRecog).Milliseconds > 800 || (gameState == (int)GameState.ATTRACT && introVideoTime.Elapsed.Subtract(femPlayerRecog).Milliseconds > 800))
-                                        {
-                                            GLOBALS.PLAYER_TWO_ACTIVE = true;
-                                            P2skeleton = skel.TrackingId;
-                                            femPlayingText = true;
-                                            p2textFadeOut = new TimeSpan(0, 0, 3); // 3-second fadebout
-                                            if (gameState == (int)GameState.ATTRACT && GLOBALS.PLAYER_TWO_ACTIVE)
-                                            {
-                                                videoPlayer.Dispose();
-                                                IncrementDance();
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+
+                        }
+                        else
+                        {
+                            //both players active!
+                            int boop = 4;
                         }
 
+                        #region replace this with same as above? might not need to since upon going to continue I reset players
                         if (gameState == (int)GameState.CONTINUE)
                         {
-                            selectedDance.mc.UpdateSkeleton(skel);
-                            if (!GLOBALS.PLAYER_ONE_ACTIVE && selectedDance.mc.LeftHandRaiseTriggered())
-                            {
-                                if (!GLOBALS.PLAYER_TWO_ACTIVE || numPeople > 1)
-                                {
-                                    if (malePlayerRecog == stepFinished) //Start recording
-                                    {
-                                        if (gameState == (int)GameState.ATTRACT) malePlayerRecog = introVideoTime.Elapsed;
-                                        else malePlayerRecog = videoTime.Elapsed;
-                                    }
-                                    else
-                                    { //If their hand has been up for over 5 seconds
-                                        if (videoTime.Elapsed.Subtract(malePlayerRecog).Milliseconds > 800 || (gameState == (int)GameState.ATTRACT && introVideoTime.Elapsed.Subtract(malePlayerRecog).Milliseconds > 800))
-                                        {
-                                            GLOBALS.PLAYER_ONE_ACTIVE = true;
-                                            P1skeleton = skel.TrackingId;
-                                            malePlayingText = true;
-                                            p1textFadeOut = new TimeSpan(0, 0, 3); // 3-second fadeout
-                                            //ensure 1 person doesn't count as 2
-                                            /*      if ((femPlaying && numPeople < 2))
-                                                  {
-                                                      malePlaying = false;
-                                                      malePlayingText = false;
-                                                      p1textFadeOut = new TimeSpan(0, 0, 0); // 3-second fadeout
-                                                  }*/
-                                            if (gameState == (int)GameState.ATTRACT && GLOBALS.PLAYER_ONE_ACTIVE)
-                                            {
-                                                videoPlayer.Dispose();
-                                                IncrementDance();
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            //right hand raised = play as female
-                            if (!GLOBALS.PLAYER_TWO_ACTIVE && selectedDance.mc.RightHandRaiseTriggered())
-                            {
-                                if (!GLOBALS.PLAYER_ONE_ACTIVE || numPeople > 1)
-                                {
-                                    if (femPlayerRecog == stepFinished) //Start recording
-                                    {
-                                        if (gameState == (int)GameState.ATTRACT) femPlayerRecog = introVideoTime.Elapsed;
-                                        else femPlayerRecog = videoTime.Elapsed;
-                                    }
-                                    else
-                                    { //If their hand has been up for over 3 seconds
-                                        if (videoTime.Elapsed.Subtract(femPlayerRecog).Milliseconds > 800 || (gameState == (int)GameState.ATTRACT && introVideoTime.Elapsed.Subtract(femPlayerRecog).Milliseconds > 800))
-                                        {
-                                            GLOBALS.PLAYER_TWO_ACTIVE = true;
-                                            P2skeleton = skel.TrackingId;
-                                            femPlayingText = true;
-                                            p2textFadeOut = new TimeSpan(0, 0, 3); // 3-second fadebout
-                                            if (gameState == (int)GameState.ATTRACT && GLOBALS.PLAYER_TWO_ACTIVE)
-                                            {
-                                                videoPlayer.Dispose();
-                                                IncrementDance();
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            if (GLOBALS.PLAYER_ONE_ACTIVE || GLOBALS.PLAYER_TWO_ACTIVE)
+                                IncrementDance();
                         }
+                        #endregion
 
                         //new scoring code
                         if (gameState == (int)GameState.DANCE)
                         {
                             if (skel.TrackingId != P1skeleton && skel.TrackingId != P2skeleton)
-                                return;
+                                continue;
 
                             int player = 1;
                             if (skel.TrackingId == P2skeleton)
@@ -1320,12 +1266,20 @@ namespace LebaneseKinect
                                 }
                             }
                         }
-
-#if nothing
-#endif    
-                    }
-                            
+                    }                           
                 }
+
+            if (!p1seen)
+            {
+                GLOBALS.PLAYER_ONE_ACTIVE = false;
+                P1skeldata = null;
+                P1skeleton = -1;
+            }
+            if (!p2seen)
+            {
+                GLOBALS.PLAYER_TWO_ACTIVE = false;
+                P2skeldata = null;
+                P2skeleton = -1;
             }
         }
 
