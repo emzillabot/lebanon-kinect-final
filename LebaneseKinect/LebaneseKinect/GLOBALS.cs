@@ -8,8 +8,8 @@ namespace LebaneseKinect
 {
     static class GLOBALS
     {
-        internal static int WINDOW_HEIGHT = 480;
-        internal static int WINDOW_WIDTH = 640;
+        internal static int WINDOW_HEIGHT = 900;
+        internal static int WINDOW_WIDTH = 1440;
 
         internal static int EXCELLENT_WINDOW = 150;
         internal static int GREAT_WINDOW = 300;
@@ -20,9 +20,9 @@ namespace LebaneseKinect
         internal static bool PLAYER_ONE_ACTIVE = false;
         internal static bool PLAYER_TWO_ACTIVE = false;
 
-        internal static int LEFT_TARGET = (WINDOW_WIDTH / 2) - 130;
-        internal static int RIGHT_TARGET = (WINDOW_WIDTH / 2) + 30;
-        internal static int DANCE_MOVE_Y = WINDOW_HEIGHT - 125;
+        internal static int LEFT_TARGET = (WINDOW_WIDTH / 2) - 250;
+        internal static int RIGHT_TARGET = (WINDOW_WIDTH / 2) + 50;
+        internal static int DANCE_MOVE_Y = WINDOW_HEIGHT - 200;
 
         //internal static StreamWriter writer;
 

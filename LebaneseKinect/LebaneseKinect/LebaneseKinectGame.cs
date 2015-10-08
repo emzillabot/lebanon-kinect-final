@@ -62,8 +62,8 @@ namespace LebaneseKinect
         Boolean debugging = true;
 #endif
 
-        const int WINDOW_WIDTH = 640;//720;
-        const int WINDOW_HEIGHT = 480;
+        const int WINDOW_WIDTH = 1440;//720;
+        const int WINDOW_HEIGHT = 900;
 
         // Basic XNA 3d variables
         GraphicsDeviceManager graphics;
@@ -205,7 +205,7 @@ namespace LebaneseKinect
         TimeSpan p1textFadeOut = new TimeSpan(0, 0, 0);
         TimeSpan p2textFadeOut = new TimeSpan(0, 0, 0);
 
-        Texture2D backgroundDabke, scoreBackground, scoreBackground2, scoreBackground3, continueBackground, howtoplay;
+        Texture2D backgroundDabke, scoreBackground, scoreBackground2, scoreBackground3, continueBackground, titleBackground, howtoplay;
         Rectangle backgroundRect = new Rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         List<Rectangle> shadowRects = new List<Rectangle>();
 
@@ -267,6 +267,7 @@ namespace LebaneseKinect
                 Debug.WriteLineIf(debugging, kinect.Status);
                 kinect.SkeletonStream.Enable();
                 kinect.SkeletonStream.TrackingMode = SkeletonTrackingMode.Default; // Use Seated Mode
+                //kinect.DepthStream.Enable(DepthImageFormat.Resolution640x480Fps30);
                 kinect.DepthStream.Enable(DepthImageFormat.Resolution640x480Fps30);
                 kinect.DepthFrameReady += new EventHandler<DepthImageFrameReadyEventArgs>(kinect_DepthFrameReady);
                 kinect.SkeletonFrameReady += new EventHandler<SkeletonFrameReadyEventArgs>(kinect_AllFramesReady);
@@ -289,7 +290,7 @@ namespace LebaneseKinect
             font = Content.Load<SpriteFont>("myFont");
             resultFont = Content.Load<SpriteFont>("resultFont");
 
-            howtoplay = Content.Load<Texture2D>("Textures\\instructions");
+            howtoplay = Content.Load<Texture2D>("Textures\\instructionsScreen");
 
             kinectDepthVisualizer = Content.Load<Effect>("KinectDepthVisualizer");
             // Create and load all the dance step icons
@@ -301,14 +302,15 @@ namespace LebaneseKinect
             scoreBackground = Content.Load<Texture2D>("Textures\\scoreBackground");
             scoreBackground2 = Content.Load<Texture2D>("Textures\\scoreBackground2");
             scoreBackground3 = Content.Load<Texture2D>("Textures\\scoreBackground3");
-            continueBackground = Content.Load<Texture2D>("Textures\\continueBackground");
+            titleBackground = Content.Load<Texture2D>("Textures\\titleScreen");
+            continueBackground = Content.Load<Texture2D>("Textures\\continueScreen");
             StepHomeOFF = Content.Load<Texture2D>("Textures\\dsteps1OFF");
             StepCrossOFF = Content.Load<Texture2D>("Textures\\dsteps2OFF");
             StepKickOFF = Content.Load<Texture2D>("Textures\\dsteps3OFF");
             n_MoveTargetNew = Content.Load<Texture2D>("Sprites\\n_MoveTargetNew");
             n_MoveTarget = Content.Load<Texture2D>("Sprites\\n_MoveTarget");
-            n_P1icon = Content.Load<Texture2D>("Textures\\lefthandraise");
-            n_P2icon = Content.Load<Texture2D>("Textures\\righthandraise");
+            n_P1icon = Content.Load<Texture2D>("Textures\\lefthandraise (2)");
+            n_P2icon = Content.Load<Texture2D>("Textures\\righthandraise (2)");
             n_P1Join = Content.Load<Texture2D>("Textures\\p1join");
             n_P2Join = Content.Load<Texture2D>("Textures\\p2join");
 
@@ -438,7 +440,7 @@ namespace LebaneseKinect
                     if (gameState == (int)GameState.ATTRACT)
                     {
                         // SPACEBAR stops the intro video, if it is playing...
-                        //malePlaying = true; //generic man playing
+                        GLOBALS.PLAYER_ONE_ACTIVE = true; //generic man playing
                         videoPlayer.Dispose();
                         IncrementDance();
 
@@ -586,8 +588,10 @@ namespace LebaneseKinect
                 loopTime.Start();
 
                 //reset all players
+#if USE_KINECT
                 P1skeleton = -1;
                 P2skeleton = -1;
+#endif
                 GLOBALS.PLAYER_ONE_ACTIVE = false;
                 GLOBALS.PLAYER_TWO_ACTIVE = false;
 
@@ -599,8 +603,11 @@ namespace LebaneseKinect
             if (gameState == (int)GameState.CONTINUE && restartGameLoop.CompareTo(loopTime.Elapsed) < 0)
             {
                 //reset all players
+#if USE_KINECT
                 P1skeleton = -1;
                 P2skeleton = -1;
+#endif
+
                 GLOBALS.PLAYER_ONE_ACTIVE = false;
                 GLOBALS.PLAYER_TWO_ACTIVE = false;
 
@@ -800,6 +807,7 @@ namespace LebaneseKinect
 
             // Default XNA draw stuff...
             GraphicsDevice.Clear(Color.White);
+            this.GraphicsDevice.SamplerStates[0] = SamplerState.PointClamp;
 
             //device.Clear(Color.CornflowerBlue);
 
@@ -813,6 +821,7 @@ namespace LebaneseKinect
                     // Draw intro video
                     //spriteBatch.Draw(texture, new Rectangle(0, 0, 720, 480), Color.White);
                     spriteBatch.Draw(texture, new Rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT), Color.White);
+                    spriteBatch.Draw(titleBackground, new Rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT), Color.White);
                 }
                 spriteBatch.End();
                 DrawText();
@@ -946,19 +955,19 @@ namespace LebaneseKinect
                     float fadeout = (float)Math.Abs(1000.0f - (currentTime.TotalMilliseconds % 2000)) / 1000.0f; 
 
                     if (GLOBALS.PLAYER_ONE_ACTIVE)
-                        spriteBatch.Draw(n_MoveTargetNew, new Rectangle(GLOBALS.LEFT_TARGET - 10, GLOBALS.DANCE_MOVE_Y - 10, 120, 120), Color.White);
+                        spriteBatch.Draw(n_MoveTarget, new Rectangle(GLOBALS.LEFT_TARGET, GLOBALS.DANCE_MOVE_Y, 200, 200), Color.White);
                     else
-                        spriteBatch.Draw(n_P1Join, new Rectangle(0, GLOBALS.WINDOW_HEIGHT - 100, 200, 100), Color.White * fadeout);
+                        spriteBatch.Draw(n_P1Join, new Rectangle(0, GLOBALS.WINDOW_HEIGHT - 200, 400, 200), Color.White * fadeout);
                     
                     if (GLOBALS.PLAYER_TWO_ACTIVE)
-                        spriteBatch.Draw(n_MoveTargetNew, new Rectangle(GLOBALS.RIGHT_TARGET - 10, GLOBALS.DANCE_MOVE_Y - 10, 120, 120), Color.White);
+                        spriteBatch.Draw(n_MoveTarget, new Rectangle(GLOBALS.RIGHT_TARGET, GLOBALS.DANCE_MOVE_Y, 200, 200), Color.White);
                     else
-                        spriteBatch.Draw(n_P2Join, new Rectangle(GLOBALS.WINDOW_WIDTH - 200, GLOBALS.WINDOW_HEIGHT - 100, 200, 100), Color.White * fadeout);
+                        spriteBatch.Draw(n_P2Join, new Rectangle(GLOBALS.WINDOW_WIDTH - 400, GLOBALS.WINDOW_HEIGHT - 200, 400, 200), Color.White * fadeout);
                 
                     spriteBatch.End();
 
 #if USE_KINECT
-                    SharedSpriteBatch.Draw(depthTexture, Vector2.Zero, Color.White);
+                    //SharedSpriteBatch.Draw(depthTexture, new Rectangle(0,0,GLOBALS.WINDOW_WIDTH,GLOBALS.WINDOW_HEIGHT), Color.Gray);
 #endif
                     DrawText();
                     textFadeOut = textFadeOut.Subtract(gameTime.ElapsedGameTime);
@@ -1033,7 +1042,7 @@ namespace LebaneseKinect
             //spriteBatch.Begin();
             if (gameState == (int)GameState.ATTRACT)
             {
-                String beingTitle = "Being: Lebanese Dance";
+                String beingTitle = "";
                 beingTitle = String.Format("{0,5}", beingTitle);
                 Vector2 beingSize = font.MeasureString(beingTitle);
                 DrawDebugString(font, Color.White, (int)(WINDOW_WIDTH / 2.0 - (beingSize.X / 2.0)), 10, beingTitle);
@@ -1043,8 +1052,8 @@ namespace LebaneseKinect
                 Vector2 beingSize2 = font.MeasureString(beingTitle2);
                 DrawDebugString(font, Color.White, (int)(WINDOW_WIDTH / 2.0 - (beingSize2.X / 2.0)), WINDOW_HEIGHT - 40, beingTitle2);
 
-                spriteBatch.Draw(n_P1icon, new Rectangle((WINDOW_WIDTH / 2) - 270, WINDOW_HEIGHT - 150, 120, 150), Color.White);
-                spriteBatch.Draw(n_P2icon, new Rectangle((WINDOW_WIDTH / 2) + 150, WINDOW_HEIGHT - 150, 120, 150), Color.White);
+                spriteBatch.Draw(n_P1icon, new Rectangle((WINDOW_WIDTH / 2) - 470, WINDOW_HEIGHT - 150, 120, 150), Color.White);
+                spriteBatch.Draw(n_P2icon, new Rectangle((WINDOW_WIDTH / 2) + 350, WINDOW_HEIGHT - 150, 120, 150), Color.White);
 
             }
             else if (bShowDebugText)
@@ -1110,15 +1119,15 @@ namespace LebaneseKinect
 
                         depthTexture = new Texture2D(
                             GraphicsDevice,
-                            frame.Width,
+                            frame.Width, 
                             frame.Height,
                             false,
                             SurfaceFormat.Bgra4444);
 
                         backBuffer = new RenderTarget2D(
                             GraphicsDevice,
-                            frame.Width,
-                            frame.Height,
+                            GLOBALS.WINDOW_WIDTH, //frame.Width, 
+                            GLOBALS.WINDOW_HEIGHT, //frame.Height,
                             false,
                             SurfaceFormat.Color,
                             DepthFormat.None,

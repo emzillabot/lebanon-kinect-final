@@ -68,7 +68,7 @@ namespace LebaneseKinect
                 fadeOutAmt = (float)(800.0f + fadeIn) / 800.0f; //magic numbers!
             
             if (GetMoveIcon() != null)
-                sb.Draw(GetMoveIcon(), new Rectangle(xlocation - stretch, GLOBALS.DANCE_MOVE_Y - stretch, 100 + (2 * stretch), 100 + (2 * stretch)), scoreColor * fadeOutAmt);
+                sb.Draw(GetMoveIcon(), new Rectangle(xlocation - stretch, GLOBALS.DANCE_MOVE_Y - stretch, 200 + (2 * stretch), 200 + (2 * stretch)), scoreColor * fadeOutAmt);
 
         }
 
