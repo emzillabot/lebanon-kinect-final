@@ -34,7 +34,7 @@ namespace LebaneseKinect
         float wstrx, wstry, wstrz, wstlx, wstly, wstlz;
 
         //Head pos
-        float hx, hy;
+        float hx, hy, hz;
 
         public bool CheckMove(DanceMove move, TimeSpan currentTime)
         {
@@ -286,15 +286,19 @@ namespace LebaneseKinect
         {
             return LeftFootLiftCrossTriggered();
         }
+        public bool FrontTorsoTriggered()
+        {
+            return hz > -0.01;
+        }
         public bool LeftKneeFrontAndFrontTorsoTriggered()
         {
             //Left knee in front of right (assuming forward is negative)
-            return lkz < rkz && FaceLeftTriggered();
+            return lkz < rkz && FrontTorsoTriggered();
         }
         public bool RightKneeFrontAndFrontTorsoTriggered()
         {
             //Right knee in front of left 
-            return rkz < lkz && FaceRightTriggered();
+            return rkz < lkz && FrontTorsoTriggered();
         }
         public bool CrazyHandsTriggered()
         {
@@ -340,7 +344,7 @@ namespace LebaneseKinect
         }
         private bool LeftKneeLiftAndFrontTorsoTriggered()
         {
-            return LeftKneeTriggered() && FaceLeftTriggered();
+            return LeftKneeTriggered() && FrontTorsoTriggered();
         }
         private bool LeftHandToFaceTriggered()
         {
@@ -677,6 +681,7 @@ namespace LebaneseKinect
             //Head pos
              hx = skeleton.Joints[JointType.Head].Position.X;
              hy = skeleton.Joints[JointType.Head].Position.Y;
+             hz = skeleton.Joints[JointType.Head].Position.Z;
         }
     }
 }

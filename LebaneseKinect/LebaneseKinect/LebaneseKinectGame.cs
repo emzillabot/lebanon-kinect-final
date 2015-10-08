@@ -857,10 +857,12 @@ namespace LebaneseKinect
                 }
                 //write the score to screen using DisplayScore
                 displayScoreTextF = String.Format("{0,5}", displayScoreF);
-                DrawDebugString(resultFont, Color.White, (int)(WINDOW_WIDTH - 15 - resultFont.MeasureString(displayScoreTextF).X), 100, displayScoreTextF);
+                //if (GLOBALS.PLAYER_TWO_ACTIVE)
+                DrawDebugString(resultFont, Color.White, (int)(WINDOW_WIDTH - 175 - resultFont.MeasureString(displayScoreTextF).X), 200, displayScoreTextF);
 
                 displayScoreText = String.Format("{0,5}", displayScore);
-                DrawDebugString(resultFont, Color.White, (int)(15), 100, displayScoreText);
+                //if (GLOBALS.PLAYER_ONE_ACTIVE)
+                DrawDebugString(resultFont, Color.White, (int)(175), 200, displayScoreText);
 
                 String rating, ratingF;
                 Color ratingC, ratingFC;
@@ -896,8 +898,10 @@ namespace LebaneseKinect
                     ratingF = "In Training";
                     ratingFC = Color.Yellow;
                 }
-                DrawDebugString(resultFont, ratingFC, (int)(WINDOW_WIDTH - 5 - resultFont.MeasureString(ratingF).X), 400, ratingF);
-                DrawDebugString(resultFont, ratingC, (int)(5), 400, rating);
+                //if (GLOBALS.PLAYER_TWO_ACTIVE)
+                DrawDebugString(resultFont, ratingFC, (int)(WINDOW_WIDTH - 175 - resultFont.MeasureString(ratingF).X), 300, ratingF);
+                //if (GLOBALS.PLAYER_ONE_ACTIVE)
+                DrawDebugString(resultFont, ratingC, (int)(175), 300, rating);
 
                 spriteBatch.End();
                 
@@ -1052,21 +1056,30 @@ namespace LebaneseKinect
                 Vector2 beingSize2 = font.MeasureString(beingTitle2);
                 DrawDebugString(font, Color.White, (int)(WINDOW_WIDTH / 2.0 - (beingSize2.X / 2.0)), WINDOW_HEIGHT - 40, beingTitle2);
 
-                spriteBatch.Draw(n_P1icon, new Rectangle((WINDOW_WIDTH / 2) - 470, WINDOW_HEIGHT - 150, 120, 150), Color.White);
-                spriteBatch.Draw(n_P2icon, new Rectangle((WINDOW_WIDTH / 2) + 350, WINDOW_HEIGHT - 150, 120, 150), Color.White);
+                spriteBatch.Draw(n_P1icon, new Rectangle((WINDOW_WIDTH / 2) - 470, WINDOW_HEIGHT - 200, 200, 200), Color.White);
+                spriteBatch.Draw(n_P2icon, new Rectangle((WINDOW_WIDTH / 2) + 350, WINDOW_HEIGHT - 200, 200, 200), Color.White);
 
             }
             else if (bShowDebugText)
             {
                 displayScoreTextF = String.Format("{0,5}", displayScoreF);
-                //Vector2 scoreTextSize = resultFont.MeasureString(displayScoreText);
-                //DrawDebugString(font, Color.White, (int)(WINDOW_WIDTH - scoreTextSize.X), 10, displayScoreText);
                 Vector2 scoreSize = font.MeasureString(displayScoreTextF);
+                if (GLOBALS.PLAYER_TWO_ACTIVE)
                 DrawDebugString(font, Color.White, (int)(WINDOW_WIDTH - scoreSize.X - 10), 10, displayScoreTextF);
 
                 displayScoreText = String.Format("{0,5}", displayScore);
                 Vector2 scoreSize2 = font.MeasureString(displayScoreText);
+                if (GLOBALS.PLAYER_ONE_ACTIVE)
                 DrawDebugString(font, Color.White, (int)(10), 10, displayScoreText);
+
+                //displayScoreTextF = String.Format("{0,5}", displayScoreF);
+                //if(GLOBALS.PLAYER_TWO_ACTIVE)
+                //DrawDebugString(resultFont, Color.White, (int)(GLOBALS.RIGHT_TARGET + 100 - (resultFont.MeasureString(displayScoreTextF).X/2)), GLOBALS.WINDOW_HEIGHT - 50, displayScoreTextF);
+
+                //displayScoreText = String.Format("{0,5}", displayScore);
+                //if(GLOBALS.PLAYER_ONE_ACTIVE)
+                //DrawDebugString(resultFont, Color.White, (int)(GLOBALS.LEFT_TARGET + 100 - (resultFont.MeasureString(displayScoreText).X/2)), GLOBALS.WINDOW_HEIGHT - 50, displayScoreText);
+
             }
 
             double textFadeOutAmt = textFadeOut.TotalMilliseconds / 2000.0;
@@ -1075,11 +1088,15 @@ namespace LebaneseKinect
             {
                 resultColor.A = (byte)Math.Max((255 * textFadeOutAmt), 0);
                 Vector2 resultSize = resultFont.MeasureString(resultString);
-                DrawDebugString(resultFont, resultColor, (int)(10), 25, resultString);
+                int width_m = (int)resultFont.MeasureString(resultString).X;
+                if (GLOBALS.PLAYER_ONE_ACTIVE)
+                DrawDebugString(resultFont, resultColor, GLOBALS.LEFT_TARGET - (width_m / 2) + 100, GLOBALS.WINDOW_HEIGHT - 120, resultString);
 
                 resultColorF.A = (byte)Math.Max((255 * textFadeOutAmt), 0);
                 Vector2 resultSizeF = resultFont.MeasureString(resultStringF);
-                DrawDebugString(resultFont, resultColorF, (int)(WINDOW_WIDTH - 10 - resultSizeF.X), 25, resultStringF);
+                int width = (int)resultFont.MeasureString(resultStringF).X;
+                if (GLOBALS.PLAYER_TWO_ACTIVE)
+                DrawDebugString(resultFont, resultColorF,  GLOBALS.RIGHT_TARGET - (width/2) + 100, GLOBALS.WINDOW_HEIGHT - 120, resultStringF);
             }
 
             Color pColor = Color.White;
